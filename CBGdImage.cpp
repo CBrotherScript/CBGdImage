@@ -46,7 +46,7 @@ ICBObject* CBGdImage_gdImageCreate(ICBrother* pCBrother,ICBObjectList &args,ICla
 	}
 
 	int sx = sxObj->AnyTypeToInt();
-	int sy = sxObj->AnyTypeToInt();
+	int sy = syObj->AnyTypeToInt();
 	im = gdImageCreate(sx,sy);
 	obj->SetUserParm(im);
 	return pCBrother->CreateCBObject(im != NULL);
@@ -69,7 +69,7 @@ ICBObject* CBGdImage_gdImageCreateTrueColor(ICBrother* pCBrother,ICBObjectList &
 	}
 
 	int sx = sxObj->AnyTypeToInt();
-	int sy = sxObj->AnyTypeToInt();
+	int sy = syObj->AnyTypeToInt();
 	im = gdImageCreateTrueColor(sx,sy);
 	obj->SetUserParm(im);
 	return pCBrother->CreateCBObject(im != NULL);
