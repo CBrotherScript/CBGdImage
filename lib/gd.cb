@@ -1,0 +1,29 @@
+import CBGdImage.code
+
+module gd
+{
+	//string stringUp
+	const TINY_FONT = 1;
+	const SMALL_FONT = 2;
+	const MEDIUMBOLD_FONT = 3;
+	const LARGE_FONT = 4;
+	const GIANT_FONT = 5;
+	
+	
+	/* Style is a bitwise OR ( | operator ) of these.
+	gdArc and gdChord are mutually exclusive;
+	gdChord just connects the starting and ending
+	angles with a straight line, while gdArc produces
+	a rounded edge. gdPie is a synonym for gdArc.
+	gdNoFill indicates that the arc or chord should be
+	outlined, not filled. gdEdged, used together with
+	gdNoFill, indicates that the beginning and ending
+	angles should be connected to the center; this is
+	a good way to outline (rather than fill) a
+	'pie slice'. */	
+	//arc
+	const ARC_PIE = 0;
+	const ARC_CHORD = 1;
+	const ARC_NOFILL = 2;
+	const ARC_EDGED = 4;
+}
