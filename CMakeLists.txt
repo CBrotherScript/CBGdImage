@@ -4,7 +4,7 @@ project(CBGdImage)
 #set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS -static-libstdc++)
 
-set(CBROTHER_ROOT XXXX/cbsdk)
+set(CBROTHER_ROOT XXXX/cbrother)
 set(GD_INCLUDE_DIR XXXX/libgd/src)
 set(GD_BINARY_DIR XXXX/libgd/build/Bin/Release)
 
