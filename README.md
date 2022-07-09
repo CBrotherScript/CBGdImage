@@ -9,7 +9,7 @@
     linux_x86 : ext\CBGdImage\linux\amd64\CBGdImage.so    
     linux_x64 : ext\CBGdImage\linux\x86\CBGdImage.so    
     macos_x64 : ext\CBGdImage\mac\amd64\CBGdImage.dylib
-3. lib/gd.cb和sample/gdtest.cb放到CBrother对应目录下
+2. lib/gd.cb和sample/gdtest.cb放到CBrother对应目录下
 
 ## 安装成功后使用的例子
 ```javascript
