@@ -10,7 +10,7 @@
 #include <gdfonts.h>
 #include <gdfontmb.h>
 
-ICBObject* CBGdImage_Init(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_Init(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
 	return NULL;
 }
@@ -22,477 +22,477 @@ void CBGdImage_Release(ICBrother* pCBrother,IClassObject* obj,int releaseType)
 		return;
 	}
 
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
 		gdImageDestroy(im);
 	}
 }
 
-ICBObject* CBGdImage_gdImageCreate(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCreate(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is already created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is already created.");
 		return NULL;
 	}
 
-	ICBObject* sxObj = args.GetCBObject(0);
-	ICBObject* syObj = args.GetCBObject(1);
+	ICBObject* sxObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* syObj = ICBObjectList_GetCBObject(args,1);
 	if (sxObj == NULL || syObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int sx = sxObj->AnyTypeToInt();
-	int sy = syObj->AnyTypeToInt();
+	int sx = ICBObject_AnyTypeToInt(sxObj);
+	int sy = ICBObject_AnyTypeToInt(syObj);
 	im = gdImageCreate(sx,sy);
-	obj->SetUserParm(im);
-	return pCBrother->CreateCBObject(im != NULL);
+	IClassObject_SetUserParm(obj,im);
+	return ICBrother_CreateCBObjectBool(pCBrother,im != NULL);
 }
 
-ICBObject* CBGdImage_gdImageCreateTrueColor(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCreateTrueColor(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is already created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is already created.");
 		return NULL;
 	}
 
-	ICBObject* sxObj = args.GetCBObject(0);
-	ICBObject* syObj = args.GetCBObject(1);
+	ICBObject* sxObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* syObj = ICBObjectList_GetCBObject(args,1);
 	if (sxObj == NULL || syObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int sx = sxObj->AnyTypeToInt();
-	int sy = syObj->AnyTypeToInt();
+	int sx = ICBObject_AnyTypeToInt(sxObj);
+	int sy = ICBObject_AnyTypeToInt(syObj);
 	im = gdImageCreateTrueColor(sx,sy);
-	obj->SetUserParm(im);
-	return pCBrother->CreateCBObject(im != NULL);
+	IClassObject_SetUserParm(obj,im);
+	return ICBrother_CreateCBObjectBool(pCBrother,im != NULL);
 }
 
-ICBObject* CBGdImage_gdImageColorAllocate(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageColorAllocate(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* rObj = args.GetCBObject(0);
-	ICBObject* gObj = args.GetCBObject(1);
-	ICBObject* bObj = args.GetCBObject(2);
+	ICBObject* rObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* gObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* bObj = ICBObjectList_GetCBObject(args,2);
 	if (rObj == NULL || gObj == NULL || bObj == NULL)
 	{
-		return pCBrother->CreateCBObject(-1);
+		return ICBrother_CreateCBObjectInt(pCBrother,-1);
 	}
 
-	int r = rObj->AnyTypeToInt();
-	int g = gObj->AnyTypeToInt();
-	int b = bObj->AnyTypeToInt();
+	int r = ICBObject_AnyTypeToInt(rObj);
+	int g = ICBObject_AnyTypeToInt(gObj);
+	int b = ICBObject_AnyTypeToInt(bObj);
 	int ci = gdImageColorAllocate(im,r,g,b);
-	return pCBrother->CreateCBObject(ci);
+	return ICBrother_CreateCBObjectInt(pCBrother,ci);
 }
 
-ICBObject* CBGdImage_gdImageColorAllocateAlpha(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageColorAllocateAlpha(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* rObj = args.GetCBObject(0);
-	ICBObject* gObj = args.GetCBObject(1);
-	ICBObject* bObj = args.GetCBObject(2);
-	ICBObject* aObj = args.GetCBObject(3);
+	ICBObject* rObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* gObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* bObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* aObj = ICBObjectList_GetCBObject(args,3);
 	if (rObj == NULL || gObj == NULL || bObj == NULL || aObj == NULL)
 	{
-		return pCBrother->CreateCBObject(-1);
+		return ICBrother_CreateCBObjectInt(pCBrother,-1);
 	}
 
-	int r = rObj->AnyTypeToInt();
-	int g = gObj->AnyTypeToInt();
-	int b = bObj->AnyTypeToInt();
-	int a = aObj->AnyTypeToInt();
+	int r = ICBObject_AnyTypeToInt(rObj);
+	int g = ICBObject_AnyTypeToInt(gObj);
+	int b = ICBObject_AnyTypeToInt(bObj);
+	int a = ICBObject_AnyTypeToInt(aObj);
 	int ci = gdImageColorAllocateAlpha(im,r,g,b,a);
-	return pCBrother->CreateCBObject(ci);
+	return ICBrother_CreateCBObjectInt(pCBrother,ci);
 }
 
-ICBObject* CBGdImage_gdImageArc(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageArc(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* cxObj = args.GetCBObject(0);
-	ICBObject* cyObj = args.GetCBObject(1);
-	ICBObject* wObj = args.GetCBObject(2);
-	ICBObject* hObj = args.GetCBObject(3);
-	ICBObject* sObj = args.GetCBObject(4);
-	ICBObject* eObj = args.GetCBObject(5);
-	ICBObject* colorObj = args.GetCBObject(6);
+	ICBObject* cxObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* cyObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* wObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* hObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* sObj = ICBObjectList_GetCBObject(args,4);
+	ICBObject* eObj = ICBObjectList_GetCBObject(args,5);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,6);
 	if (cxObj == NULL || cyObj == NULL || wObj == NULL || hObj == NULL || sObj == NULL || eObj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int cx = cxObj->AnyTypeToInt();
-	int cy = cyObj->AnyTypeToInt();
-	int w = wObj->AnyTypeToInt();
-	int h = hObj->AnyTypeToInt();
-	int s = sObj->AnyTypeToInt();
-	int e = eObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int cx = ICBObject_AnyTypeToInt(cxObj);
+	int cy = ICBObject_AnyTypeToInt(cyObj);
+	int w = ICBObject_AnyTypeToInt(wObj);
+	int h = ICBObject_AnyTypeToInt(hObj);
+	int s = ICBObject_AnyTypeToInt(sObj);
+	int e = ICBObject_AnyTypeToInt(eObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageArc(im,cx,cy,w,h,s,e,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageFilledArc(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageFilledArc(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* cxObj = args.GetCBObject(0);
-	ICBObject* cyObj = args.GetCBObject(1);
-	ICBObject* wObj = args.GetCBObject(2);
-	ICBObject* hObj = args.GetCBObject(3);
-	ICBObject* sObj = args.GetCBObject(4);
-	ICBObject* eObj = args.GetCBObject(5);
-	ICBObject* colorObj = args.GetCBObject(6);
-	ICBObject* styleObj = args.GetCBObject(7);
+	ICBObject* cxObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* cyObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* wObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* hObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* sObj = ICBObjectList_GetCBObject(args,4);
+	ICBObject* eObj = ICBObjectList_GetCBObject(args,5);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,6);
+	ICBObject* styleObj = ICBObjectList_GetCBObject(args,7);
 	if (cxObj == NULL || cyObj == NULL || wObj == NULL || hObj == NULL || sObj == NULL || eObj == NULL || colorObj == NULL || styleObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int cx = cxObj->AnyTypeToInt();
-	int cy = cyObj->AnyTypeToInt();
-	int w = wObj->AnyTypeToInt();
-	int h = hObj->AnyTypeToInt();
-	int s = sObj->AnyTypeToInt();
-	int e = eObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
-	int style = styleObj->AnyTypeToInt();
+	int cx = ICBObject_AnyTypeToInt(cxObj);
+	int cy = ICBObject_AnyTypeToInt(cyObj);
+	int w = ICBObject_AnyTypeToInt(wObj);
+	int h = ICBObject_AnyTypeToInt(hObj);
+	int s = ICBObject_AnyTypeToInt(sObj);
+	int e = ICBObject_AnyTypeToInt(eObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
+	int style = ICBObject_AnyTypeToInt(styleObj);
 
 	gdImageFilledArc(im,cx,cy,w,h,s,e,color,style);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageEllipse(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageEllipse(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* cxObj = args.GetCBObject(0);
-	ICBObject* cyObj = args.GetCBObject(1);
-	ICBObject* wObj = args.GetCBObject(2);
-	ICBObject* hObj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* cxObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* cyObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* wObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* hObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (cxObj == NULL || cyObj == NULL || wObj == NULL || hObj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int cx = cxObj->AnyTypeToInt();
-	int cy = cyObj->AnyTypeToInt();
-	int w = wObj->AnyTypeToInt();
-	int h = hObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int cx = ICBObject_AnyTypeToInt(cxObj);
+	int cy = ICBObject_AnyTypeToInt(cyObj);
+	int w = ICBObject_AnyTypeToInt(wObj);
+	int h = ICBObject_AnyTypeToInt(hObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageEllipse(im,cx,cy,w,h,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageFilledEllipse(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageFilledEllipse(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* cxObj = args.GetCBObject(0);
-	ICBObject* cyObj = args.GetCBObject(1);
-	ICBObject* wObj = args.GetCBObject(2);
-	ICBObject* hObj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* cxObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* cyObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* wObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* hObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (cxObj == NULL || cyObj == NULL || wObj == NULL || hObj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int cx = cxObj->AnyTypeToInt();
-	int cy = cyObj->AnyTypeToInt();
-	int w = wObj->AnyTypeToInt();
-	int h = hObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int cx = ICBObject_AnyTypeToInt(cxObj);
+	int cy = ICBObject_AnyTypeToInt(cyObj);
+	int w = ICBObject_AnyTypeToInt(wObj);
+	int h = ICBObject_AnyTypeToInt(hObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageFilledEllipse(im,cx,cy,w,h,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageRectangle(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageRectangle(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
-	ICBObject* x2Obj = args.GetCBObject(2);
-	ICBObject* y2Obj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* x2Obj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* y2Obj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (x1Obj == NULL || y1Obj == NULL || x2Obj == NULL || y2Obj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	int x2 = x2Obj->AnyTypeToInt();
-	int y2 = y2Obj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	int x2 = ICBObject_AnyTypeToInt(x2Obj);
+	int y2 = ICBObject_AnyTypeToInt(y2Obj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageRectangle(im,x1,y1,x2,y2,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageFilledRectangle(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageFilledRectangle(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
-	ICBObject* x2Obj = args.GetCBObject(2);
-	ICBObject* y2Obj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* x2Obj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* y2Obj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (x1Obj == NULL || y1Obj == NULL || x2Obj == NULL || y2Obj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	int x2 = x2Obj->AnyTypeToInt();
-	int y2 = y2Obj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	int x2 = ICBObject_AnyTypeToInt(x2Obj);
+	int y2 = ICBObject_AnyTypeToInt(y2Obj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageFilledRectangle(im,x1,y1,x2,y2,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageFillToBorder(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageFillToBorder(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
-	ICBObject* borderObj = args.GetCBObject(2);
-	ICBObject* colorObj = args.GetCBObject(3);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* borderObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,3);
 	if (x1Obj == NULL || y1Obj == NULL || borderObj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	int border = borderObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	int border = ICBObject_AnyTypeToInt(borderObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageFillToBorder(im,x1,y1,border,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageFill(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageFill(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
-	ICBObject* colorObj = args.GetCBObject(2);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,2);
 	if (x1Obj == NULL || y1Obj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageFill(im,x1,y1,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageCopy(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCopy(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* srcObj = args.GetCBObject(0);
-	if (srcObj == NULL || srcObj->Type() != CB_CLASS)
+	ICBObject* srcObj = ICBObjectList_GetCBObject(args,0);
+	if (srcObj == NULL || ICBObject_Type(srcObj) != CB_CLASS)
 	{
-		pException = pCBrother->CreateException("GDImageException","src is not gd::Image object.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
 		return NULL;
 	}
 
-	IClassObject* clsObj = srcObj->ClassObjValue();
-	if (strcmp(clsObj->GetCBClassName(),"gd::Image") != 0)
+	IClassObject* clsObj = ICBObject_ClassObjValue(srcObj);
+	if (strcmp(IClassObject_GetCBClassName(clsObj),"gd::Image") != 0)
 	{
-		pException = pCBrother->CreateException("GDImageException","src is not gd::Image object.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
 		return NULL;
 	}
 
-	ICBObject* dstXObj = args.GetCBObject(1);
-	ICBObject* dstYObj = args.GetCBObject(2);
-	ICBObject* srcXObj = args.GetCBObject(3);
-	ICBObject* srcYObj = args.GetCBObject(4);
-	ICBObject* wObj = args.GetCBObject(5);
-	ICBObject* hObj = args.GetCBObject(6);
+	ICBObject* dstXObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* dstYObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* srcXObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* srcYObj = ICBObjectList_GetCBObject(args,4);
+	ICBObject* wObj = ICBObjectList_GetCBObject(args,5);
+	ICBObject* hObj = ICBObjectList_GetCBObject(args,6);
 	if (dstXObj == NULL || dstYObj == NULL || srcXObj == NULL || srcYObj == NULL || wObj == NULL || hObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int dstX = dstXObj->AnyTypeToInt();
-	int dstY = dstYObj->AnyTypeToInt();
-	int srcX = srcXObj->AnyTypeToInt();
-	int srcY = srcYObj->AnyTypeToInt();
-	int w = wObj->AnyTypeToInt();
-	int h = hObj->AnyTypeToInt();
+	int dstX = ICBObject_AnyTypeToInt(dstXObj);
+	int dstY = ICBObject_AnyTypeToInt(dstYObj);
+	int srcX = ICBObject_AnyTypeToInt(srcXObj);
+	int srcY = ICBObject_AnyTypeToInt(srcYObj);
+	int w = ICBObject_AnyTypeToInt(wObj);
+	int h = ICBObject_AnyTypeToInt(hObj);
 
-	if(!pCBrother->WriteLockCBClsObject(clsObj))
+	if(!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
 	{
-		pException = pCBrother->CreateException("SyncException","multi thread access at object func! 'gd::Image' Object.");
+		*pException = ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'gd::Image' Object.");
 		return NULL;
 	}
 
-	gdImagePtr src = (gdImagePtr)clsObj->GetUserParm();
+	gdImagePtr src = (gdImagePtr)IClassObject_GetUserParm(clsObj);
 	if (src == NULL)
 	{
-		pCBrother->WriteUnlockCBClsObject(clsObj);
-		pException = pCBrother->CreateException("GDImageException","src is not gd::Image object.");
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
 		return NULL;
 	}
 
 	gdImageCopy(im,src,dstX,dstY,srcX,srcY,w,h);
-	pCBrother->WriteUnlockCBClsObject(clsObj);
-	return pCBrother->CreateCBObject(true);
+	ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageCopyMerge(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCopyMerge(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* srcObj = args.GetCBObject(0);
-	if (srcObj == NULL || srcObj->Type() != CB_CLASS)
+	ICBObject* srcObj = ICBObjectList_GetCBObject(args,0);
+	if (srcObj == NULL || ICBObject_Type(srcObj) != CB_CLASS)
 	{
-		pException = pCBrother->CreateException("GDImageException","src is not gd::Image object.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
 		return NULL;
 	}
 
-	IClassObject* clsObj = srcObj->ClassObjValue();
-	if (strcmp(clsObj->GetCBClassName(),"gd::Image") != 0)
+	IClassObject* clsObj = ICBObject_ClassObjValue(srcObj);
+	if (strcmp(IClassObject_GetCBClassName(clsObj),"gd::Image") != 0)
 	{
-		pException = pCBrother->CreateException("GDImageException","src is not gd::Image object.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
 		return NULL;
 	}
 
-	ICBObject* dstXObj = args.GetCBObject(1);
-	ICBObject* dstYObj = args.GetCBObject(2);
-	ICBObject* srcXObj = args.GetCBObject(3);
-	ICBObject* srcYObj = args.GetCBObject(4);
-	ICBObject* wObj = args.GetCBObject(5);
-	ICBObject* hObj = args.GetCBObject(6);
-	ICBObject* pctObj = args.GetCBObject(7);
+	ICBObject* dstXObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* dstYObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* srcXObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* srcYObj = ICBObjectList_GetCBObject(args,4);
+	ICBObject* wObj = ICBObjectList_GetCBObject(args,5);
+	ICBObject* hObj = ICBObjectList_GetCBObject(args,6);
+	ICBObject* pctObj = ICBObjectList_GetCBObject(args,7);
 	if (dstXObj == NULL || dstYObj == NULL || srcXObj == NULL || srcYObj == NULL || wObj == NULL || hObj == NULL || pctObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int dstX = dstXObj->AnyTypeToInt();
-	int dstY = dstYObj->AnyTypeToInt();
-	int srcX = srcXObj->AnyTypeToInt();
-	int srcY = srcYObj->AnyTypeToInt();
-	int w = wObj->AnyTypeToInt();
-	int h = hObj->AnyTypeToInt();
-	int pct = pctObj->AnyTypeToInt();
+	int dstX = ICBObject_AnyTypeToInt(dstXObj);
+	int dstY = ICBObject_AnyTypeToInt(dstYObj);
+	int srcX = ICBObject_AnyTypeToInt(srcXObj);
+	int srcY = ICBObject_AnyTypeToInt(srcYObj);
+	int w = ICBObject_AnyTypeToInt(wObj);
+	int h = ICBObject_AnyTypeToInt(hObj);
+	int pct = ICBObject_AnyTypeToInt(pctObj);
 
-	if(!pCBrother->WriteLockCBClsObject(clsObj))
+	if(!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
 	{
-		pException = pCBrother->CreateException("SyncException","multi thread access at object func! 'gd::Image' Object.");
+		*pException = ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'gd::Image' Object.");
 		return NULL;
 	}
 
-	gdImagePtr src = (gdImagePtr)clsObj->GetUserParm();
+	gdImagePtr src = (gdImagePtr)IClassObject_GetUserParm(clsObj);
 	if (src == NULL)
 	{
-		pCBrother->WriteUnlockCBClsObject(clsObj);
-		pException = pCBrother->CreateException("GDImageException","src is not gd::Image object.");
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
 		return NULL;
 	}
 
 	gdImageCopyMerge(im,src,dstX,dstY,srcX,srcY,w,h,pct);
-	pCBrother->WriteUnlockCBClsObject(clsObj);
-	return pCBrother->CreateCBObject(true);
+	ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageClone(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageClone(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* cloneImageObj = pCBrother->CreateCBClassObject("gd::Image");
+	ICBObject* cloneImageObj = ICBrother_CreateCBClassObject(pCBrother,"gd::Image",NULL,0);
 	if (cloneImageObj == NULL)
 	{
 		return NULL;
@@ -501,35 +501,35 @@ ICBObject* CBGdImage_gdImageClone(ICBrother* pCBrother,ICBObjectList &args,IClas
 	gdImagePtr cloneImage = gdImageClone(im);
 	if (cloneImage == NULL)
 	{
-		pCBrother->ReleaseCBObject(cloneImageObj);
-		pException = pCBrother->CreateException("GDImageException","clone err.");
+		ICBrother_ReleaseCBObject(pCBrother,cloneImageObj);
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","clone err.");
 		return NULL;
 	}
 
-	cloneImageObj->ClassObjValue()->SetUserParm(cloneImage);	
+	IClassObject_SetUserParm(ICBObject_ClassObjValue(cloneImageObj),cloneImage);	
 	return cloneImageObj;
 }
 
-ICBObject* CBGdImage_gdImageScale(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageScale(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* new_widthObj = args.GetCBObject(0);
-	ICBObject* new_heightObj = args.GetCBObject(1);
+	ICBObject* new_widthObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* new_heightObj = ICBObjectList_GetCBObject(args,1);
 	if (new_widthObj == NULL || new_heightObj == NULL)
 	{
 		return NULL;
 	}
 
-	int new_width = new_widthObj->AnyTypeToInt();
-	int new_height = new_heightObj->AnyTypeToInt();
+	int new_width = ICBObject_AnyTypeToInt(new_widthObj);
+	int new_height = ICBObject_AnyTypeToInt(new_heightObj);
 
-	ICBObject* cloneImageObj = pCBrother->CreateCBClassObject("gd::Image");
+	ICBObject* cloneImageObj = ICBrother_CreateCBClassObject(pCBrother,"gd::Image",NULL,0);
 	if (cloneImageObj == NULL)
 	{
 		return NULL;
@@ -538,131 +538,131 @@ ICBObject* CBGdImage_gdImageScale(ICBrother* pCBrother,ICBObjectList &args,IClas
 	gdImagePtr cloneImage = gdImageScale(im,new_width,new_height);
 	if (cloneImage == NULL)
 	{
-		pCBrother->ReleaseCBObject(cloneImageObj);
-		pException = pCBrother->CreateException("GDImageException","scale err.");
+		ICBrother_ReleaseCBObject(pCBrother,cloneImageObj);
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","scale err.");
 		return NULL;
 	}
 
-	cloneImageObj->ClassObjValue()->SetUserParm(cloneImage);	
+	IClassObject_SetUserParm(ICBObject_ClassObjValue(cloneImageObj),cloneImage);	
 	return cloneImageObj;
 }
 
-ICBObject* CBGdImage_gdImageSetPixel(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageSetPixel(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (x1Obj == NULL || y1Obj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageSetPixel(im,x1,y1,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageGetPixel(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageGetPixel(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
 	if (x1Obj == NULL || y1Obj == NULL)
 	{
-		return pCBrother->CreateCBObject(0);
+		return ICBrother_CreateCBObjectInt(pCBrother,0);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	return pCBrother->CreateCBObject(gdImageGetPixel(im,x1,y1));
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	return ICBrother_CreateCBObjectInt(pCBrother,gdImageGetPixel(im,x1,y1));
 }
 
-ICBObject* CBGdImage_gdImageGetTrueColorPixel(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageGetTrueColorPixel(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
 	if (x1Obj == NULL || y1Obj == NULL)
 	{
-		return pCBrother->CreateCBObject(0);
+		return ICBrother_CreateCBObjectInt(pCBrother,0);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	return pCBrother->CreateCBObject(gdImageGetTrueColorPixel(im,x1,y1));
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	return ICBrother_CreateCBObjectInt(pCBrother,gdImageGetTrueColorPixel(im,x1,y1));
 }
 
-ICBObject* CBGdImage_gdImageLine(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageLine(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* x1Obj = args.GetCBObject(0);
-	ICBObject* y1Obj = args.GetCBObject(1);
-	ICBObject* x2Obj = args.GetCBObject(2);
-	ICBObject* y2Obj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* x2Obj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* y2Obj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (x1Obj == NULL || y1Obj == NULL || x2Obj == NULL || y2Obj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int x1 = x1Obj->AnyTypeToInt();
-	int y1 = y1Obj->AnyTypeToInt();
-	int x2 = x2Obj->AnyTypeToInt();
-	int y2 = y2Obj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x1 = ICBObject_AnyTypeToInt(x1Obj);
+	int y1 = ICBObject_AnyTypeToInt(y1Obj);
+	int x2 = ICBObject_AnyTypeToInt(x2Obj);
+	int y2 = ICBObject_AnyTypeToInt(y2Obj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	gdImageLine(im,x1,y1,x2,y2,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageString(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageString(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* fObj = args.GetCBObject(0);
-	ICBObject* xObj = args.GetCBObject(1);
-	ICBObject* yObj = args.GetCBObject(2);
-	ICBObject* sObj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* fObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* xObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* yObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* sObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (fObj == NULL || xObj == NULL || yObj == NULL || sObj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int f = fObj->AnyTypeToInt();
+	int f = ICBObject_AnyTypeToInt(fObj);
 	gdFontPtr font = NULL;
 	switch (f)
 	{
@@ -693,41 +693,41 @@ ICBObject* CBGdImage_gdImageString(ICBrother* pCBrother,ICBObjectList &args,ICla
 		}
 	default:
 		{
-			return pCBrother->CreateCBObject(false);
+			return ICBrother_CreateCBObjectBool(pCBrother,false);
 		}
 	}
 
-	int x = xObj->AnyTypeToInt();
-	int y = yObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x = ICBObject_AnyTypeToInt(xObj);
+	int y = ICBObject_AnyTypeToInt(yObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	char buf[64] = {0};
-	const char* s = sObj->AnyTypeToString(buf);
+	const char* s = ICBObject_AnyTypeToString(sObj,buf);
 
 	gdImageString(im,font,x,y,(unsigned char*)s,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageStringUp(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageStringUp(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* fObj = args.GetCBObject(0);
-	ICBObject* xObj = args.GetCBObject(1);
-	ICBObject* yObj = args.GetCBObject(2);
-	ICBObject* sObj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
+	ICBObject* fObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* xObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* yObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* sObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
 	if (fObj == NULL || xObj == NULL || yObj == NULL || sObj == NULL || colorObj == NULL)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	int f = fObj->AnyTypeToInt();
+	int f = ICBObject_AnyTypeToInt(fObj);
 	gdFontPtr font = NULL;
 	switch (f)
 	{
@@ -758,169 +758,169 @@ ICBObject* CBGdImage_gdImageStringUp(ICBrother* pCBrother,ICBObjectList &args,IC
 		}
 	default:
 		{
-			return pCBrother->CreateCBObject(false);
+			return ICBrother_CreateCBObjectBool(pCBrother,false);
 		}
 	}
 
-	int x = xObj->AnyTypeToInt();
-	int y = yObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
+	int x = ICBObject_AnyTypeToInt(xObj);
+	int y = ICBObject_AnyTypeToInt(yObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
 
 	char buf[64] = {0};
-	const char* s = sObj->AnyTypeToString(buf);
+	const char* s = ICBObject_AnyTypeToString(sObj,buf);
 
 	gdImageStringUp(im,font,x,y,(unsigned char*)s,color);
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageStringTTF(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageStringTTF(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* sizeObj = args.GetCBObject(0);
-	ICBObject* angleObj = args.GetCBObject(1);
-	ICBObject* xObj = args.GetCBObject(2);
-	ICBObject* yObj = args.GetCBObject(3);
-	ICBObject* colorObj = args.GetCBObject(4);
-	ICBObject* fontlistObj = args.GetCBObject(5);
-	ICBObject* textObj = args.GetCBObject(6);
+	ICBObject* sizeObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* angleObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* xObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* yObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
+	ICBObject* fontlistObj = ICBObjectList_GetCBObject(args,5);
+	ICBObject* textObj = ICBObjectList_GetCBObject(args,6);
 	if (sizeObj == NULL || angleObj == NULL || xObj == NULL || yObj == NULL || colorObj == NULL || fontlistObj == NULL || textObj == NULL || 
-		fontlistObj->Type() != CB_STRING)
+		ICBObject_Type(fontlistObj) != CB_STRING)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	float size = sizeObj->AnyTypeToFloat();
-	float angle = angleObj->AnyTypeToFloat();
-	int x = xObj->AnyTypeToInt();
-	int y = yObj->AnyTypeToInt();
-	int color = colorObj->AnyTypeToInt();
-	const char* fontlist = fontlistObj->StringVal();
+	float size = ICBObject_AnyTypeToFloat(sizeObj);
+	float angle = ICBObject_AnyTypeToFloat(angleObj);
+	int x = ICBObject_AnyTypeToInt(xObj);
+	int y = ICBObject_AnyTypeToInt(yObj);
+	int color = ICBObject_AnyTypeToInt(colorObj);
+	const char* fontlist = ICBObject_StringVal(fontlistObj);
 	char buf[64] = {0};
-	const char* s = textObj->AnyTypeToString(buf);
+	const char* s = ICBObject_AnyTypeToString(textObj,buf);
 
 	int brect[8] = {0};
 	char* res = gdImageStringFT(im,brect,color,fontlist,size,angle,x,y,s);
 	if (res != NULL)
 	{
-		pCBrother->CreateException("GDImageException",res);
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException",res);
 		return NULL;
 	}
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageJpeg(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageJpeg(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	ICBObject* qualityObj = args.GetCBObject(1);
-	if (fileNameObj == NULL || fileNameObj->Type() != CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* qualityObj = ICBObjectList_GetCBObject(args,1);
+	if (fileNameObj == NULL || ICBObject_Type(fileNameObj) != CB_STRING)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
 	int quality = 100;
 	if (qualityObj != NULL)
 	{
-		quality = qualityObj->AnyTypeToInt();
+		quality = ICBObject_AnyTypeToInt(qualityObj);
 	}
 
-	const char* fileName = fileNameObj->StringVal();
+	const char* fileName = ICBObject_StringVal(fileNameObj);
 	FILE* fp = fopen(fileName,"wb+");
 	if (fp == NULL)
 	{
 		char buf[1024] = {0};
 		sprintf(buf,"file open failed. %s",fileName);
-		pException = pCBrother->CreateException("IOException",buf);
+		*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 	}
 	gdImageJpeg(im,fp,quality);
 	fclose(fp);
 
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageJpegPtr(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageJpegPtr(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
 	int quality = 100;
-	ICBObject* qualityObj = args.GetCBObject(0);
+	ICBObject* qualityObj = ICBObjectList_GetCBObject(args,0);
 	if (qualityObj != NULL)
 	{
-		quality = qualityObj->AnyTypeToInt();
+		quality = ICBObject_AnyTypeToInt(qualityObj);
 	}
 
 	int size = 0;
 	char* data = (char*)gdImageJpegPtr(im,&size,quality);
 	if (data == NULL || size <= 0)
 	{
-		pException = pCBrother->CreateException("GDImageException","jpeg error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","jpeg error.");
 		return NULL;
 	}
 
-	ICBObject* lenObj = pCBrother->CreateCBObject(size + 1);
-	ICBObject* byteArrayobj = pCBrother->CreateCBClassObject("ByteArray",1,lenObj);
-	pCBrother->ReleaseCBObject(lenObj);
+	ICBObject* lenObj = ICBrother_CreateCBObjectInt(pCBrother,size + 1);
+	ICBObject* byteArrayobj = ICBrother_CreateCBClassObject(pCBrother,"ByteArray",&lenObj,1);
+	ICBrother_ReleaseCBObject(pCBrother,lenObj);
 
-	IClassObject* clsobj = byteArrayobj->ClassObjValue();
-	ICBByteBuffer* bytearray = (ICBByteBuffer*)clsobj->GetUserParm();
-	bytearray->WriteBytes(data,size);
+	IClassObject* clsobj = ICBObject_ClassObjValue(byteArrayobj);
+	ICBByteArray* bytearray = (ICBByteArray*)IClassObject_GetUserParm(clsobj);
+	ICBByteArray_WriteBytes(bytearray,data,size);
 	free(data);
 
 	return byteArrayobj;
 }
 
-ICBObject* CBGdImage_gdImagePng(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImagePng(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj == NULL || fileNameObj->Type() != CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (fileNameObj == NULL || ICBObject_Type(fileNameObj) != CB_STRING)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	const char* fileName = fileNameObj->StringVal();
+	const char* fileName = ICBObject_StringVal(fileNameObj);
 	FILE* fp = fopen(fileName,"wb+");
 	if (fp == NULL)
 	{
 		char buf[1024] = {0};
 		sprintf(buf,"file open failed. %s",fileName);
-		pException = pCBrother->CreateException("IOException",buf);
+		*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 	}
 	gdImagePng(im,fp);
 	fclose(fp);
 
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImagePngPtr(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImagePngPtr(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
@@ -928,57 +928,57 @@ ICBObject* CBGdImage_gdImagePngPtr(ICBrother* pCBrother,ICBObjectList &args,ICla
 	char* data = (char*)gdImagePngPtr(im,&size);
 	if (data == NULL || size <= 0)
 	{
-		pException = pCBrother->CreateException("GDImageException","png error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","png error.");
 		return NULL;
 	}
 
-	ICBObject* lenObj = pCBrother->CreateCBObject(size + 1);
-	ICBObject* byteArrayobj = pCBrother->CreateCBClassObject("ByteArray",1,lenObj);
-	pCBrother->ReleaseCBObject(lenObj);
+	ICBObject* lenObj = ICBrother_CreateCBObjectInt(pCBrother,size + 1);
+	ICBObject* byteArrayobj = ICBrother_CreateCBClassObject(pCBrother,"ByteArray",&lenObj,1);
+	ICBrother_ReleaseCBObject(pCBrother,lenObj);
 
-	IClassObject* clsobj = byteArrayobj->ClassObjValue();
-	ICBByteBuffer* bytearray = (ICBByteBuffer*)clsobj->GetUserParm();
-	bytearray->WriteBytes(data,size);
+	IClassObject* clsobj = ICBObject_ClassObjValue(byteArrayobj);
+	ICBByteArray* bytearray = (ICBByteArray*)IClassObject_GetUserParm(clsobj);
+	ICBByteArray_WriteBytes(bytearray,data,size);
 	free(data);
 
 	return byteArrayobj;
 }
 
-ICBObject* CBGdImage_gdImageGif(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageGif(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj == NULL || fileNameObj->Type() != CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (fileNameObj == NULL || ICBObject_Type(fileNameObj) != CB_STRING)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	const char* fileName = fileNameObj->StringVal();
+	const char* fileName = ICBObject_StringVal(fileNameObj);
 	FILE* fp = fopen(fileName,"wb+");
 	if (fp == NULL)
 	{
 		char buf[1024] = {0};
 		sprintf(buf,"file open failed. %s",fileName);
-		pException = pCBrother->CreateException("IOException",buf);
+		*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 	}
 	gdImageGif(im,fp);
 	fclose(fp);
 
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageGifPtr(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageGifPtr(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
@@ -986,129 +986,129 @@ ICBObject* CBGdImage_gdImageGifPtr(ICBrother* pCBrother,ICBObjectList &args,ICla
 	char* data = (char*)gdImageGifPtr(im,&size);
 	if (data == NULL || size <= 0)
 	{
-		pException = pCBrother->CreateException("GDImageException","gif error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","gif error.");
 		return NULL;
 	}
 
-	ICBObject* lenObj = pCBrother->CreateCBObject(size + 1);
-	ICBObject* byteArrayobj = pCBrother->CreateCBClassObject("ByteArray",1,lenObj);
-	pCBrother->ReleaseCBObject(lenObj);
+	ICBObject* lenObj = ICBrother_CreateCBObjectInt(pCBrother,size + 1);
+	ICBObject* byteArrayobj = ICBrother_CreateCBClassObject(pCBrother,"ByteArray",&lenObj,1);
+	ICBrother_ReleaseCBObject(pCBrother,lenObj);
 
-	IClassObject* clsobj = byteArrayobj->ClassObjValue();
-	ICBByteBuffer* bytearray = (ICBByteBuffer*)clsobj->GetUserParm();
-	bytearray->WriteBytes(data,size);
+	IClassObject* clsobj = ICBObject_ClassObjValue(byteArrayobj);
+	ICBByteArray* bytearray = (ICBByteArray*)IClassObject_GetUserParm(clsobj);
+	ICBByteArray_WriteBytes(bytearray,data,size);
 	free(data);
 
 	return byteArrayobj;
 }
 
-ICBObject* CBGdImage_gdImageBmp(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageBmp(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	ICBObject* compressionObj = args.GetCBObject(1);
-	if (fileNameObj == NULL || fileNameObj->Type() != CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	ICBObject* compressionObj = ICBObjectList_GetCBObject(args,1);
+	if (fileNameObj == NULL || ICBObject_Type(fileNameObj) != CB_STRING)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
 	int compression = 0;
 	if (compressionObj != NULL)
 	{
-		compression = compressionObj->AnyTypeToInt();
+		compression = ICBObject_AnyTypeToInt(compressionObj);
 	}
 
-	const char* fileName = fileNameObj->StringVal();
+	const char* fileName = ICBObject_StringVal(fileNameObj);
 	FILE* fp = fopen(fileName,"wb+");
 	if (fp == NULL)
 	{
 		char buf[1024] = {0};
 		sprintf(buf,"file open failed. %s",fileName);
-		pException = pCBrother->CreateException("IOException",buf);
+		*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 	}
 	gdImageBmp(im,fp,compression);
 	fclose(fp);
 
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageBmpPtr(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageBmpPtr(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* compressionObj = args.GetCBObject(0);
+	ICBObject* compressionObj = ICBObjectList_GetCBObject(args,0);
 	int compression = 0;
 	if (compressionObj != NULL)
 	{
-		compression = compressionObj->AnyTypeToInt();
+		compression = ICBObject_AnyTypeToInt(compressionObj);
 	}
 
 	int size = 0;
 	char* data = (char*)gdImageBmpPtr(im,&size,compression);
 	if (data == NULL || size <= 0)
 	{
-		pException = pCBrother->CreateException("GDImageException","bmp error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","bmp error.");
 		return NULL;
 	}
 
-	ICBObject* lenObj = pCBrother->CreateCBObject(size + 1);
-	ICBObject* byteArrayobj = pCBrother->CreateCBClassObject("ByteArray",1,lenObj);
-	pCBrother->ReleaseCBObject(lenObj);
+	ICBObject* lenObj = ICBrother_CreateCBObjectInt(pCBrother,size + 1);
+	ICBObject* byteArrayobj = ICBrother_CreateCBClassObject(pCBrother,"ByteArray",&lenObj,1);
+	ICBrother_ReleaseCBObject(pCBrother,lenObj);
 
-	IClassObject* clsobj = byteArrayobj->ClassObjValue();
-	ICBByteBuffer* bytearray = (ICBByteBuffer*)clsobj->GetUserParm();
-	bytearray->WriteBytes(data,size);
+	IClassObject* clsobj = ICBObject_ClassObjValue(byteArrayobj);
+	ICBByteArray* bytearray = (ICBByteArray*)IClassObject_GetUserParm(clsobj);
+	ICBByteArray_WriteBytes(bytearray,data,size);
 	free(data);
 
 	return byteArrayobj;
 }
 
-ICBObject* CBGdImage_gdImageWebp(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageWebp(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj == NULL || fileNameObj->Type() != CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (fileNameObj == NULL || ICBObject_Type(fileNameObj) != CB_STRING)
 	{
-		return pCBrother->CreateCBObject(false);
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
 	}
 
-	const char* fileName = fileNameObj->StringVal();
+	const char* fileName = ICBObject_StringVal(fileNameObj);
 	FILE* fp = fopen(fileName,"wb+");
 	if (fp == NULL)
 	{
 		char buf[1024] = {0};
 		sprintf(buf,"file open failed. %s",fileName);
-		pException = pCBrother->CreateException("IOException",buf);
+		*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 	}
 	gdImageWebp(im,fp);
 	fclose(fp);
 
-	return pCBrother->CreateCBObject(true);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageWebpPtr(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageWebpPtr(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
@@ -1116,390 +1116,390 @@ ICBObject* CBGdImage_gdImageWebpPtr(ICBrother* pCBrother,ICBObjectList &args,ICl
 	char* data = (char*)gdImageWebpPtr(im,&size);
 	if (data == NULL || size <= 0)
 	{
-		pException = pCBrother->CreateException("GDImageException","webp error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","webp error.");
 		return NULL;
 	}
 
-	ICBObject* lenObj = pCBrother->CreateCBObject(size + 1);
-	ICBObject* byteArrayobj = pCBrother->CreateCBClassObject("ByteArray",1,lenObj);
-	pCBrother->ReleaseCBObject(lenObj);
+	ICBObject* lenObj = ICBrother_CreateCBObjectInt(pCBrother,size + 1);
+	ICBObject* byteArrayobj = ICBrother_CreateCBClassObject(pCBrother,"ByteArray",&lenObj,1);
+	ICBrother_ReleaseCBObject(pCBrother,lenObj);
 
-	IClassObject* clsobj = byteArrayobj->ClassObjValue();
-	ICBByteBuffer* bytearray = (ICBByteBuffer*)clsobj->GetUserParm();
-	bytearray->WriteBytes(data,size);
+	IClassObject* clsobj = ICBObject_ClassObjValue(byteArrayobj);
+	ICBByteArray* bytearray = (ICBByteArray*)IClassObject_GetUserParm(clsobj);
+	ICBByteArray_WriteBytes(bytearray,data,size);
 	free(data);
 
 	return byteArrayobj;
 }
 
-ICBObject* CBGdImage_gdImageCreateFromJpeg(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCreateFromJpeg(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is already created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is already created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj->Type() == CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (ICBObject_Type(fileNameObj) == CB_STRING)
 	{
-		const char* fileName = fileNameObj->StringVal();
+		const char* fileName = ICBObject_StringVal(fileNameObj);
 		FILE* fp = fopen(fileName,"rb");
 		if (fp == NULL)
 		{
 			char buf[1024] = {0};
 			sprintf(buf,"file open failed. %s",fileName);
-			pException = pCBrother->CreateException("IOException",buf);
+			*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 			return NULL;
 		}
 		im = gdImageCreateFromJpeg(fp);
 		fclose(fp);
 	}
-	else if (fileNameObj->Type() == CB_CLASS)
+	else if (ICBObject_Type(fileNameObj) == CB_CLASS)
 	{
-		ICBObject* lenObj = args.GetCBObject(1);
-		IClassObject* clsObj = fileNameObj->ClassObjValue();
-		if (strcmp(clsObj->GetCBClassName(),"ByteArray") != 0)
+		ICBObject* lenObj = ICBObjectList_GetCBObject(args,1);
+		IClassObject* clsObj = ICBObject_ClassObjValue(fileNameObj);
+		if (strcmp(IClassObject_GetCBClassName(clsObj),"ByteArray") != 0)
 		{
-			pException = pCBrother->CreateException("GDImageException","image data not is ByteArray.");
+			*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data not is ByteArray.");
 			return NULL;
 		}
 
-		if (!pCBrother->WriteLockCBClsObject(clsObj))
+		if (!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
 		{
-			pCBrother->CreateException("SyncException","multi thread access at object func! 'ByteArray' Object!");
+			ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'ByteArray' Object!");
 			return NULL;
 		}
 
-		ICBByteBuffer* byteArray = (ICBByteBuffer*)clsObj->GetUserParm();
-		const char* data = byteArray->GetBuf() + byteArray->GetReadPos();
-		int len = byteArray->GetWritePos() - byteArray->GetReadPos();
+		ICBByteArray* byteArray = (ICBByteArray*)IClassObject_GetUserParm(clsObj);
+		const char* data = ICBByteArray_GetBuf(byteArray) + ICBByteArray_GetReadPos(byteArray);
+		int len = ICBByteArray_GetWritePos(byteArray) - ICBByteArray_GetReadPos(byteArray);
 		if (lenObj != NULL)
 		{
-			len = lenObj->AnyTypeToInt();
+			len = ICBObject_AnyTypeToInt(lenObj);
 		}
 		im = gdImageCreateFromJpegPtr(len,(void*)data);
-		pCBrother->WriteUnlockCBClsObject(clsObj);
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
 	}
 	else
 	{
-		pException = pCBrother->CreateException("GDImageException","image data error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data error.");
 		return NULL;
 	}
 
-	obj->SetUserParm(im);
-	return pCBrother->CreateCBObject(true);
+	IClassObject_SetUserParm(obj,im);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageCreateFromPng(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCreateFromPng(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is already created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is already created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj->Type() == CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (ICBObject_Type(fileNameObj) == CB_STRING)
 	{
-		const char* fileName = fileNameObj->StringVal();
+		const char* fileName = ICBObject_StringVal(fileNameObj);
 		FILE* fp = fopen(fileName,"rb");
 		if (fp == NULL)
 		{
 			char buf[1024] = {0};
 			sprintf(buf,"file open failed. %s",fileName);
-			pException = pCBrother->CreateException("IOException",buf);
+			*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 			return NULL;
 		}
 		im = gdImageCreateFromPng(fp);
 		fclose(fp);
 	}
-	else if (fileNameObj->Type() == CB_CLASS)
+	else if (ICBObject_Type(fileNameObj) == CB_CLASS)
 	{
-		ICBObject* lenObj = args.GetCBObject(1);
-		IClassObject* clsObj = fileNameObj->ClassObjValue();
-		if (strcmp(clsObj->GetCBClassName(),"ByteArray") != 0)
+		ICBObject* lenObj = ICBObjectList_GetCBObject(args,1);
+		IClassObject* clsObj = ICBObject_ClassObjValue(fileNameObj);
+		if (strcmp(IClassObject_GetCBClassName(clsObj),"ByteArray") != 0)
 		{
-			pException = pCBrother->CreateException("GDImageException","image data not is ByteArray.");
+			*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data not is ByteArray.");
 			return NULL;
 		}
 
-		if (!pCBrother->WriteLockCBClsObject(clsObj))
+		if (!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
 		{
-			pCBrother->CreateException("SyncException","multi thread access at object func! 'ByteArray' Object!");
+			ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'ByteArray' Object!");
 			return NULL;
 		}
 
-		ICBByteBuffer* byteArray = (ICBByteBuffer*)clsObj->GetUserParm();
-		const char* data = byteArray->GetBuf() + byteArray->GetReadPos();
-		int len = byteArray->GetWritePos() - byteArray->GetReadPos();
+		ICBByteArray* byteArray = (ICBByteArray*)IClassObject_GetUserParm(clsObj);
+		const char* data = ICBByteArray_GetBuf(byteArray) + ICBByteArray_GetReadPos(byteArray);
+		int len = ICBByteArray_GetWritePos(byteArray) - ICBByteArray_GetReadPos(byteArray);
 		if (lenObj != NULL)
 		{
-			len = lenObj->AnyTypeToInt();
+			len = ICBObject_AnyTypeToInt(lenObj);
 		}
 		im = gdImageCreateFromPngPtr(len,(void*)data);
-		pCBrother->WriteUnlockCBClsObject(clsObj);
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
 	}
 	else
 	{
-		pException = pCBrother->CreateException("GDImageException","image data error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data error.");
 		return NULL;
 	}
 
-	obj->SetUserParm(im);
-	return pCBrother->CreateCBObject(true);
+	IClassObject_SetUserParm(obj,im);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageCreateFromGif(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCreateFromGif(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is already created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is already created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj->Type() == CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (ICBObject_Type(fileNameObj) == CB_STRING)
 	{
-		const char* fileName = fileNameObj->StringVal();
+		const char* fileName = ICBObject_StringVal(fileNameObj);
 		FILE* fp = fopen(fileName,"rb");
 		if (fp == NULL)
 		{
 			char buf[1024] = {0};
 			sprintf(buf,"file open failed. %s",fileName);
-			pException = pCBrother->CreateException("IOException",buf);
+			*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 			return NULL;
 		}
 		im = gdImageCreateFromGif(fp);
 		fclose(fp);
 	}
-	else if (fileNameObj->Type() == CB_CLASS)
+	else if (ICBObject_Type(fileNameObj) == CB_CLASS)
 	{
-		ICBObject* lenObj = args.GetCBObject(1);
-		IClassObject* clsObj = fileNameObj->ClassObjValue();
-		if (strcmp(clsObj->GetCBClassName(),"ByteArray") != 0)
+		ICBObject* lenObj = ICBObjectList_GetCBObject(args,1);
+		IClassObject* clsObj = ICBObject_ClassObjValue(fileNameObj);
+		if (strcmp(IClassObject_GetCBClassName(clsObj),"ByteArray") != 0)
 		{
-			pException = pCBrother->CreateException("GDImageException","image data not is ByteArray.");
+			*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data not is ByteArray.");
 			return NULL;
 		}
 
-		if (!pCBrother->WriteLockCBClsObject(clsObj))
+		if (!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
 		{
-			pCBrother->CreateException("SyncException","multi thread access at object func! 'ByteArray' Object!");
+			ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'ByteArray' Object!");
 			return NULL;
 		}
 
-		ICBByteBuffer* byteArray = (ICBByteBuffer*)clsObj->GetUserParm();
-		const char* data = byteArray->GetBuf() + byteArray->GetReadPos();
-		int len = byteArray->GetWritePos() - byteArray->GetReadPos();
+		ICBByteArray* byteArray = (ICBByteArray*)IClassObject_GetUserParm(clsObj);
+		const char* data = ICBByteArray_GetBuf(byteArray) + ICBByteArray_GetReadPos(byteArray);
+		int len = ICBByteArray_GetWritePos(byteArray) - ICBByteArray_GetReadPos(byteArray);
 		if (lenObj != NULL)
 		{
-			len = lenObj->AnyTypeToInt();
+			len = ICBObject_AnyTypeToInt(lenObj);
 		}
 		im = gdImageCreateFromGifPtr(len,(void*)data);
-		pCBrother->WriteUnlockCBClsObject(clsObj);
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
 	}
 	else
 	{
-		pException = pCBrother->CreateException("GDImageException","image data error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data error.");
 		return NULL;
 	}
 
-	obj->SetUserParm(im);
-	return pCBrother->CreateCBObject(true);
+	IClassObject_SetUserParm(obj,im);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageCreateFromBmp(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCreateFromBmp(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is already created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is already created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj->Type() == CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (ICBObject_Type(fileNameObj) == CB_STRING)
 	{
-		const char* fileName = fileNameObj->StringVal();
+		const char* fileName = ICBObject_StringVal(fileNameObj);
 		FILE* fp = fopen(fileName,"rb");
 		if (fp == NULL)
 		{
 			char buf[1024] = {0};
 			sprintf(buf,"file open failed. %s",fileName);
-			pException = pCBrother->CreateException("IOException",buf);
+			*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 			return NULL;
 		}
 		im = gdImageCreateFromBmp(fp);
 		fclose(fp);
 	}
-	else if (fileNameObj->Type() == CB_CLASS)
+	else if (ICBObject_Type(fileNameObj) == CB_CLASS)
 	{
-		ICBObject* lenObj = args.GetCBObject(1);
-		IClassObject* clsObj = fileNameObj->ClassObjValue();
-		if (strcmp(clsObj->GetCBClassName(),"ByteArray") != 0)
+		ICBObject* lenObj = ICBObjectList_GetCBObject(args,1);
+		IClassObject* clsObj = ICBObject_ClassObjValue(fileNameObj);
+		if (strcmp(IClassObject_GetCBClassName(clsObj),"ByteArray") != 0)
 		{
-			pException = pCBrother->CreateException("GDImageException","image data not is ByteArray.");
+			*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data not is ByteArray.");
 			return NULL;
 		}
 
-		if (!pCBrother->WriteLockCBClsObject(clsObj))
+		if (!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
 		{
-			pCBrother->CreateException("SyncException","multi thread access at object func! 'ByteArray' Object!");
+			ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'ByteArray' Object!");
 			return NULL;
 		}
 
-		ICBByteBuffer* byteArray = (ICBByteBuffer*)clsObj->GetUserParm();
-		const char* data = byteArray->GetBuf() + byteArray->GetReadPos();
-		int len = byteArray->GetWritePos() - byteArray->GetReadPos();
+		ICBByteArray* byteArray = (ICBByteArray*)IClassObject_GetUserParm(clsObj);
+		const char* data = ICBByteArray_GetBuf(byteArray) + ICBByteArray_GetReadPos(byteArray);
+		int len = ICBByteArray_GetWritePos(byteArray) - ICBByteArray_GetReadPos(byteArray);
 		if (lenObj != NULL)
 		{
-			len = lenObj->AnyTypeToInt();
+			len = ICBObject_AnyTypeToInt(lenObj);
 		}
 		im = gdImageCreateFromBmpPtr(len,(void*)data);
-		pCBrother->WriteUnlockCBClsObject(clsObj);
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
 	}
 	else
 	{
-		pException = pCBrother->CreateException("GDImageException","image data error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data error.");
 		return NULL;
 	}
 
-	obj->SetUserParm(im);
-	return pCBrother->CreateCBObject(true);
+	IClassObject_SetUserParm(obj,im);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageCreateFromWebp(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageCreateFromWebp(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im != NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is already created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is already created.");
 		return NULL;
 	}
 
-	ICBObject* fileNameObj = args.GetCBObject(0);
-	if (fileNameObj->Type() == CB_STRING)
+	ICBObject* fileNameObj = ICBObjectList_GetCBObject(args,0);
+	if (ICBObject_Type(fileNameObj) == CB_STRING)
 	{
-		const char* fileName = fileNameObj->StringVal();
+		const char* fileName = ICBObject_StringVal(fileNameObj);
 		FILE* fp = fopen(fileName,"rb");
 		if (fp == NULL)
 		{
 			char buf[1024] = {0};
 			sprintf(buf,"file open failed. %s",fileName);
-			pException = pCBrother->CreateException("IOException",buf);
+			*pException = ICBrother_CreateException(pCBrother,"IOException",buf);
 			return NULL;
 		}
 		im = gdImageCreateFromWebp(fp);
 		fclose(fp);
 	}
-	else if (fileNameObj->Type() == CB_CLASS)
+	else if (ICBObject_Type(fileNameObj) == CB_CLASS)
 	{
-		ICBObject* lenObj = args.GetCBObject(1);
-		IClassObject* clsObj = fileNameObj->ClassObjValue();
-		if (strcmp(clsObj->GetCBClassName(),"ByteArray") != 0)
+		ICBObject* lenObj = ICBObjectList_GetCBObject(args,1);
+		IClassObject* clsObj = ICBObject_ClassObjValue(fileNameObj);
+		if (strcmp(IClassObject_GetCBClassName(clsObj),"ByteArray") != 0)
 		{
-			pException = pCBrother->CreateException("GDImageException","image data not is ByteArray.");
+			*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data not is ByteArray.");
 			return NULL;
 		}
 
-		if (!pCBrother->WriteLockCBClsObject(clsObj))
+		if (!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
 		{
-			pCBrother->CreateException("SyncException","multi thread access at object func! 'ByteArray' Object!");
+			ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'ByteArray' Object!");
 			return NULL;
 		}
 
-		ICBByteBuffer* byteArray = (ICBByteBuffer*)clsObj->GetUserParm();
-		const char* data = byteArray->GetBuf() + byteArray->GetReadPos();
-		int len = byteArray->GetWritePos() - byteArray->GetReadPos();
+		ICBByteArray* byteArray = (ICBByteArray*)IClassObject_GetUserParm(clsObj);
+		const char* data = ICBByteArray_GetBuf(byteArray) + ICBByteArray_GetReadPos(byteArray);
+		int len = ICBByteArray_GetWritePos(byteArray) - ICBByteArray_GetReadPos(byteArray);
 		if (lenObj != NULL)
 		{
-			len = lenObj->AnyTypeToInt();
+			len = ICBObject_AnyTypeToInt(lenObj);
 		}
 		im = gdImageCreateFromWebpPtr(len,(void*)data);
-		pCBrother->WriteUnlockCBClsObject(clsObj);
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
 	}
 	else
 	{
-		pException = pCBrother->CreateException("GDImageException","image data error.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image data error.");
 		return NULL;
 	}
 
-	obj->SetUserParm(im);
-	return pCBrother->CreateCBObject(true);
+	IClassObject_SetUserParm(obj,im);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
-ICBObject* CBGdImage_gdImageSX(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageSX(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	return pCBrother->CreateCBObject(gdImageSX(im));
+	return ICBrother_CreateCBObjectInt(pCBrother,gdImageSX(im));
 }
 
-ICBObject* CBGdImage_gdImageSY(ICBrother* pCBrother,ICBObjectList &args,IClassObject* obj,ICBException* &pException)
+ICBObject* CBGdImage_gdImageSY(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
-	gdImagePtr im = (gdImagePtr)obj->GetUserParm();
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
 	if (im == NULL)
 	{
-		pException = pCBrother->CreateException("GDImageException","image is not created.");
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
 		return NULL;
 	}
 
-	return pCBrother->CreateCBObject(gdImageSY(im));
+	return ICBrother_CreateCBObjectInt(pCBrother,gdImageSY(im));
 }
 
 bool Init(ICBrother* pCBrother)
 {
 	//regiest your function and class
-	pCBrother->RegisterCBClass("Image",CBGdImage_Init,CBGdImage_Release,"gd");
-	pCBrother->RegisterCBClassFunc("gd::Image","create",CBGdImage_gdImageCreate,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","createTrueColor",CBGdImage_gdImageCreateTrueColor,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","createFromJpeg",CBGdImage_gdImageCreateFromJpeg,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","createFromPng",CBGdImage_gdImageCreateFromPng,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","createFromGif",CBGdImage_gdImageCreateFromGif,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","createFromBmp",CBGdImage_gdImageCreateFromBmp,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","createFromWebp",CBGdImage_gdImageCreateFromWebp,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","colorAllocate",CBGdImage_gdImageColorAllocate,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","colorAllocateAlpha",CBGdImage_gdImageColorAllocateAlpha,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","arc",CBGdImage_gdImageArc,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","filledArc",CBGdImage_gdImageFilledArc,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","ellipse",CBGdImage_gdImageEllipse,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","filledEllipse",CBGdImage_gdImageFilledEllipse,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","rectangle",CBGdImage_gdImageRectangle,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","filledRectangle",CBGdImage_gdImageFilledRectangle,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","fill",CBGdImage_gdImageFill,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","filledToBorder",CBGdImage_gdImageFillToBorder,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","copy",CBGdImage_gdImageCopy,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","copyMerge",CBGdImage_gdImageCopyMerge,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","clone",CBGdImage_gdImageClone,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","scale",CBGdImage_gdImageScale,true);	
-	pCBrother->RegisterCBClassFunc("gd::Image","setPixel",CBGdImage_gdImageSetPixel,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","getPixel",CBGdImage_gdImageGetPixel,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","getTrueColorPixel",CBGdImage_gdImageGetTrueColorPixel,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","line",CBGdImage_gdImageLine,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","string",CBGdImage_gdImageString,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","stringUp",CBGdImage_gdImageStringUp,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","stringTTF",CBGdImage_gdImageStringTTF,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveJpegFile",CBGdImage_gdImageJpeg,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveJpegBytes",CBGdImage_gdImageJpegPtr,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","savePngFile",CBGdImage_gdImagePng,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","savePngBytes",CBGdImage_gdImagePngPtr,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveGifFile",CBGdImage_gdImageGif,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveGifBytes",CBGdImage_gdImageGifPtr,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveBmpFile",CBGdImage_gdImageBmp,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveBmpBytes",CBGdImage_gdImageBmpPtr,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveWebpFile",CBGdImage_gdImageWebp,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","saveWebpBytes",CBGdImage_gdImageWebpPtr,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","sx",CBGdImage_gdImageSX,true);
-	pCBrother->RegisterCBClassFunc("gd::Image","sy",CBGdImage_gdImageSY,true);
+	ICBrother_RegisterCBModuleClass(pCBrother,"Image",CBGdImage_Init,CBGdImage_Release,"gd");
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","create",CBGdImage_gdImageCreate,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","createTrueColor",CBGdImage_gdImageCreateTrueColor,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","createFromJpeg",CBGdImage_gdImageCreateFromJpeg,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","createFromPng",CBGdImage_gdImageCreateFromPng,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","createFromGif",CBGdImage_gdImageCreateFromGif,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","createFromBmp",CBGdImage_gdImageCreateFromBmp,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","createFromWebp",CBGdImage_gdImageCreateFromWebp,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","colorAllocate",CBGdImage_gdImageColorAllocate,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","colorAllocateAlpha",CBGdImage_gdImageColorAllocateAlpha,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","arc",CBGdImage_gdImageArc,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","filledArc",CBGdImage_gdImageFilledArc,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","ellipse",CBGdImage_gdImageEllipse,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","filledEllipse",CBGdImage_gdImageFilledEllipse,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","rectangle",CBGdImage_gdImageRectangle,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","filledRectangle",CBGdImage_gdImageFilledRectangle,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","fill",CBGdImage_gdImageFill,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","filledToBorder",CBGdImage_gdImageFillToBorder,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","copy",CBGdImage_gdImageCopy,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","copyMerge",CBGdImage_gdImageCopyMerge,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","clone",CBGdImage_gdImageClone,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","scale",CBGdImage_gdImageScale,true);	
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","setPixel",CBGdImage_gdImageSetPixel,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","getPixel",CBGdImage_gdImageGetPixel,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","getTrueColorPixel",CBGdImage_gdImageGetTrueColorPixel,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","line",CBGdImage_gdImageLine,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","string",CBGdImage_gdImageString,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","stringUp",CBGdImage_gdImageStringUp,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","stringTTF",CBGdImage_gdImageStringTTF,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveJpegFile",CBGdImage_gdImageJpeg,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveJpegBytes",CBGdImage_gdImageJpegPtr,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","savePngFile",CBGdImage_gdImagePng,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","savePngBytes",CBGdImage_gdImagePngPtr,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveGifFile",CBGdImage_gdImageGif,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveGifBytes",CBGdImage_gdImageGifPtr,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveBmpFile",CBGdImage_gdImageBmp,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveBmpBytes",CBGdImage_gdImageBmpPtr,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveWebpFile",CBGdImage_gdImageWebp,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","saveWebpBytes",CBGdImage_gdImageWebpPtr,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","sx",CBGdImage_gdImageSX,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","sy",CBGdImage_gdImageSY,true);
 
 	return true;
 
