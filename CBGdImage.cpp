@@ -483,6 +483,70 @@ ICBObject* CBGdImage_gdImageCopyMerge(ICBrother* pCBrother,ICBObjectList* args,I
 	return ICBrother_CreateCBObjectBool(pCBrother,true);
 }
 
+ICBObject* CBGdImage_gdImageCopyResized(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
+{
+	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
+	if (im == NULL)
+	{
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","image is not created.");
+		return NULL;
+	}
+
+	ICBObject* srcObj = ICBObjectList_GetCBObject(args,0);
+	if (srcObj == NULL || ICBObject_Type(srcObj) != CB_CLASS)
+	{
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
+		return NULL;
+	}
+
+	IClassObject* clsObj = ICBObject_ClassObjValue(srcObj);
+	if (strcmp(IClassObject_GetCBClassName(clsObj),"gd::Image") != 0)
+	{
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
+		return NULL;
+	}
+
+	ICBObject* dstXObj = ICBObjectList_GetCBObject(args,1);
+	ICBObject* dstYObj = ICBObjectList_GetCBObject(args,2);
+	ICBObject* srcXObj = ICBObjectList_GetCBObject(args,3);
+	ICBObject* srcYObj = ICBObjectList_GetCBObject(args,4);
+	ICBObject* dstWObj = ICBObjectList_GetCBObject(args,5);
+	ICBObject* dstHObj = ICBObjectList_GetCBObject(args,6);
+	ICBObject* srcWObj = ICBObjectList_GetCBObject(args,7);
+	ICBObject* srcHObj = ICBObjectList_GetCBObject(args,8);
+	if (dstXObj == NULL || dstYObj == NULL || srcXObj == NULL || srcYObj == NULL || dstWObj == NULL || dstHObj == NULL || srcWObj == NULL || srcHObj == NULL)
+	{
+		return ICBrother_CreateCBObjectBool(pCBrother,false);
+	}
+
+	int dstX = ICBObject_AnyTypeToInt(dstXObj);
+	int dstY = ICBObject_AnyTypeToInt(dstYObj);
+	int srcX = ICBObject_AnyTypeToInt(srcXObj);
+	int srcY = ICBObject_AnyTypeToInt(srcYObj);
+	int dstW = ICBObject_AnyTypeToInt(dstWObj);
+	int dstH = ICBObject_AnyTypeToInt(dstHObj);
+	int srcW = ICBObject_AnyTypeToInt(srcWObj);
+	int srcH = ICBObject_AnyTypeToInt(srcHObj);
+
+	if(!ICBrother_WriteLockCBClsObject(pCBrother,clsObj))
+	{
+		*pException = ICBrother_CreateException(pCBrother,"SyncException","multi thread access at object func! 'gd::Image' Object.");
+		return NULL;
+	}
+
+	gdImagePtr src = (gdImagePtr)IClassObject_GetUserParm(clsObj);
+	if (src == NULL)
+	{
+		ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
+		*pException = ICBrother_CreateException(pCBrother,"GDImageException","src is not gd::Image object.");
+		return NULL;
+	}
+
+	gdImageCopyResized(im,src,dstX,dstY,srcX,srcY,dstW,dstH,srcW,srcH);
+	ICBrother_WriteUnlockCBClsObject(pCBrother,clsObj);
+	return ICBrother_CreateCBObjectBool(pCBrother,true);
+}
+
 ICBObject* CBGdImage_gdImageClone(ICBrother* pCBrother,ICBObjectList* args,IClassObject* obj,ICBException** pException)
 {
 	gdImagePtr im = (gdImagePtr)IClassObject_GetUserParm(obj);
@@ -558,7 +622,7 @@ ICBObject* CBGdImage_gdImageSetPixel(ICBrother* pCBrother,ICBObjectList* args,IC
 
 	ICBObject* x1Obj = ICBObjectList_GetCBObject(args,0);
 	ICBObject* y1Obj = ICBObjectList_GetCBObject(args,1);
-	ICBObject* colorObj = ICBObjectList_GetCBObject(args,4);
+	ICBObject* colorObj = ICBObjectList_GetCBObject(args,2);
 	if (x1Obj == NULL || y1Obj == NULL || colorObj == NULL)
 	{
 		return ICBrother_CreateCBObjectBool(pCBrother,false);
@@ -1479,8 +1543,9 @@ bool Init(ICBrother* pCBrother)
 	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","filledToBorder",CBGdImage_gdImageFillToBorder,true);
 	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","copy",CBGdImage_gdImageCopy,true);
 	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","copyMerge",CBGdImage_gdImageCopyMerge,true);
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","copyResized",CBGdImage_gdImageCopyResized,true);
 	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","clone",CBGdImage_gdImageClone,true);
-	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","scale",CBGdImage_gdImageScale,true);	
+	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","scale",CBGdImage_gdImageScale,true);
 	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","setPixel",CBGdImage_gdImageSetPixel,true);
 	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","getPixel",CBGdImage_gdImageGetPixel,true);
 	ICBrother_RegisterCBClassFunc(pCBrother,"gd::Image","getTrueColorPixel",CBGdImage_gdImageGetTrueColorPixel,true);
